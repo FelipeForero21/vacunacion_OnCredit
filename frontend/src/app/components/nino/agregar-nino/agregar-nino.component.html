@@ -1,0 +1,84 @@
+<div class="max-w-md sm:max-w-lg lg:max-w-xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+  <h2 class="text-xl sm:text-2xl font-bold text-center text-gray-700 dark:text-black-200 mb-6">Agregar Niño</h2>
+
+  <form (ngSubmit)="onSubmit()" #ninoForm="ngForm" class="space-y-6">
+    <div>
+      <label for="nombres" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Nombres</label>
+      <input 
+        type="text" 
+        id="nombres" 
+        class="form-input mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500" 
+        [(ngModel)]="nino.nombres" 
+        name="nombres" 
+        required
+        placeholder="Ej. Andrés Ramírez">
+    </div>
+
+    <div>
+      <label for="fechaNacimiento" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Fecha de Nacimiento</label>
+      <input 
+        type="date" 
+        id="fechaNacimiento" 
+        class="form-input mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        [(ngModel)]="nino.fechaNacimiento" 
+        name="fechaNacimiento" 
+        required>
+    </div>
+
+    <div>
+      <label for="genero" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Género</label>
+      <select 
+        id="genero" 
+        class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        [(ngModel)]="nino.genero" 
+        name="genero" 
+        required>
+        <option value="Masculino">Masculino</option>
+        <option value="Femenino">Femenino</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="tarjetaIdentidad" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Tarjeta de Identidad</label>
+      <input 
+        type="text" 
+        id="tarjetaIdentidad" 
+        class="form-input mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        [(ngModel)]="nino.tarjetaIdentidad" 
+        name="tarjetaIdentidad" 
+        required
+        placeholder="Ej. 5423465">
+    </div>
+
+    <div>
+      <label for="departamento" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Departamento</label>
+      <select 
+        id="departamento" 
+        class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        (change)="onDepartamentoChange($event)">
+        <option *ngFor="let departamento of departamentos" [value]="departamento.id">{{ departamento.nombre }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="municipio" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Municipio</label>
+      <select 
+        id="municipio" 
+        class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        [(ngModel)]="nino.municipioId" 
+        name="municipioId" 
+        required>
+        <option *ngFor="let municipio of municipios" [value]="municipio.id">{{ municipio.nombre }}</option>
+      </select>
+    </div>
+
+    <div class="flex justify-center">
+      <button 
+        type="submit" 
+        class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md shadow-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        [disabled]="ninoForm.invalid">
+        Guardar Niño
+      </button>
+    </div>
+  </form>
+</div>

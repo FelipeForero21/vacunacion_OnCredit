@@ -1,0 +1,93 @@
+<div class="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+  <h2 class="text-2xl font-bold text-center text-gray-700 dark:text-black-200 mb-6">Aplicar Vacuna</h2>
+
+  <div>
+    <label for="tarjetaIdentidad" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Buscar por Tarjeta de Identidad</label>
+    <input 
+      type="text" 
+      id="tarjetaIdentidad" 
+      class="form-input mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500" 
+      [(ngModel)]="tarjetaIdentidad" 
+      name="tarjetaIdentidad" 
+      (input)="onInputChange()"  
+      placeholder="Ej. 1006226988">
+      
+    <ul *ngIf="ninoResultados.length > 0" class="bg-white border rounded-md mt-2 shadow-lg">
+      <li *ngFor="let nino of ninoResultados" (click)="seleccionarNino(nino)" class="p-2 hover:bg-gray-100 cursor-pointer">
+        {{ nino.nombres }} - {{ nino.tarjetaIdentidad }}
+      </li>
+    </ul>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" #vacunaForm="ngForm" class="space-y-6">
+    
+    <div>
+      <label for="departamento" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Departamento</label>
+      <select 
+        id="departamento" 
+        class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        [(ngModel)]="aplicacion.departamentoId"
+        name="departamentoId"
+        (change)="onDepartamentoChange($event)">
+        <option *ngFor="let departamento of departamentos" [value]="departamento.id">{{ departamento.nombre }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="municipio" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Municipio</label>
+      <select 
+        id="municipio" 
+        class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        [(ngModel)]="aplicacion.municipioId"
+        name="municipioId" 
+        (change)="onMunicipioChange($event)">
+        <option *ngFor="let municipio of municipios" [value]="municipio.id">{{ municipio.nombre }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="ninoId" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Seleccionar Niño</label>
+      <select 
+        id="ninoId" 
+        class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        [(ngModel)]="aplicacion.ninoId" 
+        name="ninoId" 
+        required>
+        <option *ngFor="let nino of ninos" [value]="nino.id">{{ nino.nombres }}</option>
+      </select>
+    </div>
+    
+
+    <div>
+      <label for="vacunaId" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Seleccionar Vacuna</label>
+      <select 
+        id="vacunaId" 
+        class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        [(ngModel)]="aplicacion.vacunaId" 
+        name="vacunaId"
+        required>
+        <option *ngFor="let vacuna of vacunas" [value]="vacuna.id">{{ vacuna.nombre }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="fechaAplicacion" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Fecha de Aplicación</label>
+      <input 
+        type="date" 
+        id="fechaAplicacion" 
+        class="form-input mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+        [(ngModel)]="aplicacion.fechaAplicacion" 
+        name="fechaAplicacion" 
+        required>
+    </div>
+
+    <div class="flex justify-center">
+      <button 
+        type="submit" 
+        class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md shadow-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        [disabled]="vacunaForm.invalid">
+        Aplicar Vacuna
+      </button>
+    </div>
+  </form>
+</div>

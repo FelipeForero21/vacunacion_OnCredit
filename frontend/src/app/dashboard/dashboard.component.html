@@ -1,0 +1,121 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+  <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
+    <i class="fas fa-file-alt text-3xl text-orange-500 mr-4"></i>
+    <div>
+      <h2 class="text-sm font-semibold text-gray-600">Total Departamentos</h2>
+      <p class="text-xl font-bold text-gray-800">{{ totalDepartamentos }}</p>
+    </div>
+  </div>
+  <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
+    <i class="fas fa-chart-bar text-3xl text-green-500 mr-4"></i>
+    <div>
+      <h2 class="text-sm font-semibold text-gray-600">Total Municipios</h2>
+      <p class="text-xl font-bold text-gray-800">{{ totalMunicipios }}</p>
+    </div>
+  </div>
+  <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
+    <i class="fas fa-chart-line text-3xl text-blue-500 mr-4"></i>
+    <div>
+      <h2 class="text-sm font-semibold text-gray-600">Niños Vacunados</h2>
+      <p class="text-xl font-bold text-gray-800">{{ ninosVacunados }}</p>
+    </div>
+  </div>
+  <div class="bg-white p-4 rounded-lg shadow-md flex items-center">
+    <i class="fas fa-users text-3xl text-teal-500 mr-4"></i>
+    <div>
+      <h2 class="text-sm font-semibold text-gray-600">Niños Que Faltan Por Vacunarse</h2>
+      <p class="text-xl font-bold text-gray-800">{{ ninosRestantes }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="mt-6 bg-white p-4 rounded-lg shadow-md overflow-x-auto">
+  <h3 class="text-lg font-bold text-gray-800 mb-4">Últimos Registros</h3>
+  <table class="min-w-full table-auto">
+    <thead>
+      <tr class="bg-purple-600 text-white">
+        <th class="px-4 py-2 text-left">T.I.</th>
+        <th class="px-4 py-2 text-left">Nombre</th>
+        <th class="px-4 py-2 text-left">Edad</th>
+        <th class="px-4 py-2 text-left">Estado</th>
+        <th class="px-4 py-2 text-left">Municipio</th>
+        <th class="px-4 py-2 text-left">Departamento</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-800">
+      <tr *ngFor="let nino of ninos">
+        <td class="border px-4 py-2">{{ nino.tarjetaIdentidad }}</td>
+        <td class="border px-4 py-2 flex items-center">
+          <img class="w-8 h-8 rounded-full mr-2" [src]="getImageForGenero(nino.genero)" alt="{{ nino.nombres }}" />
+          {{ nino.nombres }}
+        </td>
+        <td class="border px-4 py-2">{{ calcularEdad(nino.fechaNacimiento) }} años</td>
+        <td class="border px-4 py-2">
+          <button *ngIf="nino.estaVacunado" class="bg-green-100 text-green-800 text-sm px-2 py-1 rounded-lg" disabled>
+            Vacunado
+          </button>
+          <button *ngIf="!nino.estaVacunado" class="bg-orange-100 text-orange-800 text-sm px-2 py-1 rounded-lg" (click)="verVacunasPendientes(nino)">
+            Pendiente
+          </button>
+        </td>
+        <td class="border px-4 py-2">{{ nino.municipio.nombre }}</td>
+        <td class="border px-4 py-2">{{ nino.municipio.departamento?.nombre || 'No disponible' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="flex flex-col sm:flex-row justify-between items-center mt-4 text-sm text-gray-500">
+    <span>Mostrando {{ (currentPage - 1) * pageSize + 1 }} - {{ currentPage * pageSize }} de {{ totalNinos }}</span>
+    <div class="flex items-center mt-2 sm:mt-0">
+      <a (click)="onPageChange(currentPage - 1)" *ngIf="currentPage > 1" class="px-2 py-1 bg-white border border-gray-300 rounded-l-lg cursor-pointer">
+        Anterior
+      </a>
+      <a (click)="onPageChange(currentPage + 1)" *ngIf="currentPage * pageSize < totalNinos" class="px-2 py-1 bg-purple-600 text-white border border-purple-600 rounded-r-lg cursor-pointer">
+        Siguiente
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #vacunasPendientesModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Vacunas pendientes de {{ ninoSeleccionado?.nombres }}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <li *ngFor="let vacuna of vacunasPendientes">
+        {{ vacuna.nombre }} (Edad máxima: {{ vacuna.edadMaxima }} años)
+      </li>
+    </ul>
+    <p *ngIf="vacunasPendientes.length === 0">No hay vacunas pendientes.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #ninoModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Datos del Niño</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><strong>Nombre:</strong> {{ ninoEncontrado?.nombres }}</p>
+    <p><strong>Tarjeta de Identidad:</strong> {{ ninoEncontrado?.tarjetaIdentidad }}</p>
+    <p><strong>Fecha de Nacimiento:</strong> {{ ninoEncontrado?.fechaNacimiento }}</p>
+    <p><strong>Género:</strong> {{ ninoEncontrado?.genero }}</p>
+    <p><strong>Estado de Vacunación:</strong> {{ ninoEncontrado?.estaVacunado ? 'Vacunado' : 'Pendiente' }}</p>
+    <p><strong>Municipio:</strong> {{ ninoEncontrado?.municipio.nombre }}</p>
+    <p><strong>Departamento:</strong> {{ ninoEncontrado?.municipio?.departamento?.nombre }}</p>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>

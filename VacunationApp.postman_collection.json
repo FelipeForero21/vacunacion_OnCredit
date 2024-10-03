@@ -1,0 +1,276 @@
+{
+	"info": {
+		"_postman_id": "c8a998a2-9db7-4b1f-9b8b-9e728f00ea7b",
+		"name": "VacunationApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33509084",
+		"_collection_link": "https://blue-flare-210817.postman.co/workspace/My-Workspace~931d3d74-1254-45cc-8136-433563407235/collection/33509084-c8a998a2-9db7-4b1f-9b8b-9e728f00ea7b?action=share&source=collection_link&creator=33509084"
+	},
+	"item": [
+		{
+			"name": "Departamentos",
+			"item": [
+				{
+					"name": "Consultar Departamentos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/Departamentos"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un departamento por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/Departamentos/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Municipios",
+			"item": [
+				{
+					"name": "Añadir Municipio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Nuevo Municipio\",\r\n  \"departamentoId\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/municipios"
+					},
+					"response": []
+				},
+				{
+					"name": "Listado de Municipios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/municipios"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un municipio por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/municipios/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener municipios de un departamento específico",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/municipios/departamento/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ninos",
+			"item": [
+				{
+					"name": "Obtener los niños de a 10",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/ninos?page=1&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"ninos"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resumen de niños por municipio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/ninos/resumen/municipios"
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar Niño",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombres\": \"Andrés Ramírez\",\r\n  \"fechaNacimiento\": \"2014-12-02\",\r\n  \"genero\": \"Masculino\",\r\n  \"tarjetaIdentidad\": \"5423465\",\r\n  \"municipioId\": 2\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/ninos"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtiene una lista de niños pertenecientes a un municipio específico",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/ninos/municipio/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Cambia el municipio de residencia de un niño",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"municipioId\": 2\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/ninos/1/municipio"
+					},
+					"response": []
+				},
+				{
+					"name": "Promedio de edad por municipio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/ninos/municipio/2/promedio-edad"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscador de Niños por TI",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/ninos/tarjeta-identidad/1006226"
+					},
+					"response": []
+				},
+				{
+					"name": "Niños vacunados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/nino-vacuna/vacunados/count"
+					},
+					"response": []
+				},
+				{
+					"name": "Niños Sin Vacunar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/nino-vacuna/no-vacunados/count"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener niño por Municipio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/ninos/municipio/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vacunas",
+			"item": [
+				{
+					"name": "Agregar Vacuna",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Coronavirus\",\r\n  \"edadMaxima\": 10\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/vacunas"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todas Las Vacunas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/vacunas"
+					},
+					"response": []
+				},
+				{
+					"name": "Aplicacion de Vacuna a un niño",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ninoId\": 1,\r\n  \"vacunaId\": 2,\r\n  \"fechaAplicacion\": \"2024-10-01\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/nino-vacuna"
+					},
+					"response": []
+				},
+				{
+					"name": "Estado Vacunacion",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "http://localhost:3000/ninos/1/estado-vacunacion"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

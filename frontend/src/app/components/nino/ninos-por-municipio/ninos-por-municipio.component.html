@@ -1,0 +1,95 @@
+<div class="max-w-md sm:max-w-lg lg:max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+  <h2 class="text-xl sm:text-2xl font-bold text-center text-gray-700 dark:text-black-200 mb-6">Visualizar Niños por Municipio</h2>
+
+  <div *ngIf="successMessage" class="p-4 mb-4 text-sm text-green-800 bg-green-200 rounded-lg" role="alert">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="p-4 mb-4 text-sm text-red-800 bg-red-200 rounded-lg" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <div class="mt-4">
+    <p class="text-lg font-semibold text-gray-700 dark:text-black-200">
+      Promedio de Edad Por Municipio: {{ promedioEdad | number:'1.1' }} años
+    </p>
+    <p class="text-lg font-semibold text-gray-700 dark:text-black-200">
+      Cantidad de Niños Por Municipio: {{ cantidadNinos }}
+    </p>
+  </div>
+
+  <div class="mt-6">
+    <label for="departamento" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Departamento</label>
+    <select 
+      id="departamento" 
+      class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+      [(ngModel)]="selectedDepartamentoId"
+      (change)="onDepartamentoChange($event)">
+      <option *ngFor="let departamento of departamentos" [value]="departamento.id">{{ departamento.nombre }}</option>
+    </select>
+  </div>
+
+  <div class="mt-4">
+    <label for="municipio" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Municipio</label>
+    <select 
+      id="municipio" 
+      class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+      [(ngModel)]="selectedMunicipioId"
+      (change)="onMunicipioChange($event)">
+      <option *ngFor="let municipio of municipios" [value]="municipio.id">{{ municipio.nombre }}</option>
+    </select>
+  </div>
+
+  <div class="mt-4">
+    <label for="vacunacion" class="block text-sm font-medium text-gray-700 dark:text-gray-400">Estado de Vacunación</label>
+    <select 
+      id="vacunacion" 
+      class="form-select mt-1 block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+      [(ngModel)]="selectedVacunacionStatus"
+      (change)="onFilterChange()">
+      <option value="todos">Todos</option>
+      <option value="vacunados">Vacunados</option>
+      <option value="no_vacunados">No Vacunados</option>
+    </select>
+  </div>
+
+  <div class="mt-6 overflow-x-auto">
+    <table class="min-w-full table-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+      <thead>
+        <tr>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Nombre</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Fecha de Nacimiento</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Tarjeta de Identidad</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Estado de Vacunación</th> <!-- Nueva Columna -->
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Selecciona Al Municipio que Quieras Cambiar</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Acciones</th> <!-- Nueva Columna para Botón -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let nino of ninos" class="border-t border-gray-300 dark:border-gray-700">
+          <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ nino.nombres }}</td>
+          <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ nino.fechaNacimiento | date:'dd/MM/yyyy' }}</td>
+          <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{{ nino.tarjetaIdentidad }}</td>
+          <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+            <span [ngClass]="{'text-green-600': nino.estaVacunado, 'text-red-600': !nino.estaVacunado}">
+              {{ nino.estaVacunado ? 'Vacunado' : 'No Vacunado' }}
+            </span>
+          </td>
+          <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+            <select
+              class="form-select block w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-purple-500 dark:focus:border-purple-500"
+              [(ngModel)]="nino.nuevoMunicipioId">
+              <option *ngFor="let municipio of municipios" [value]="municipio.id">{{ municipio.nombre }}</option>
+            </select>
+          </td>
+          <td class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+            <button
+              class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+              (click)="onCambiarMunicipio(nino.id, nino.nuevoMunicipioId)">
+              Cambiar Municipio
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
